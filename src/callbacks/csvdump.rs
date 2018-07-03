@@ -82,19 +82,19 @@ impl Callback for CsvDump {
 
     fn on_block(&mut self, block: Block, block_height: usize) {
         // serialize block
-        self.block_writer.write_all(block.as_csv(block_height).as_bytes()).unwrap();
+        //self.block_writer.write_all(block.as_csv(block_height).as_bytes()).unwrap();
 
         // serialize transaction
         let block_hash = utils::arr_to_hex_swapped(&block.header.hash);
         for tx in block.txs {
-            self.tx_writer.write_all(tx.as_csv(&block_hash).as_bytes()).unwrap();
+            //self.tx_writer.write_all(tx.as_csv(&block_hash).as_bytes()).unwrap();
             let txid_str = utils::arr_to_hex_swapped(&tx.hash);
 
             // serialize inputs
-            for input in &tx.value.inputs {
-                self.txin_writer.write_all(input.as_csv(&txid_str).as_bytes()).unwrap();
-            }
-            self.in_count += tx.value.in_count.value;
+            //for input in &tx.value.inputs {
+            //    self.txin_writer.write_all(input.as_csv(&txid_str).as_bytes()).unwrap();
+            //}
+            //self.in_count += tx.value.in_count.value;
 
             // serialize outputs
             for (i, output) in tx.value.outputs.iter().enumerate() {
@@ -170,11 +170,7 @@ impl EvaluatedTxOut {
     #[inline]
     fn as_csv(&self, txid: &str, index: usize) -> String {
         // (@txid, indexOut, value, @scriptPubKey, address)
-        format!("{};{};{};{};{}\n",
-            &txid,
-            &index,
-            &self.out.value,
-            &utils::arr_to_hex(&self.out.script_pubkey),
+        format!("{}\n",
             &self.script.address)
     }
 }
